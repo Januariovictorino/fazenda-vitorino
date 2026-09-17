@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fazenda Vitorino</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#eef5ee;
+    color:#18351f;
+}
+
+header{
+    background:#176b36;
+    color:white;
+    padding:28px 20px;
+    text-align:center;
+}
+
+header h1{
+    font-size:30px;
+}
+
+header p{
+    margin-top:8px;
+}
+
+nav{
+    background:white;
+    padding:12px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    box-shadow:0 2px 8px #ccc;
+}
+
+nav button{
+    border:0;
+    background:#258447;
+    color:white;
+    padding:11px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+main{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+h2{
+    margin-bottom:18px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 2px 8px #ccc;
+}
+
+.card span{
+    display:block;
+    font-size:32px;
+    margin:10px;
+}
+
+.card strong{
+    font-size:28px;
+    color:#176b36;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    margin-top:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px #ccc;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:13px;
+    margin:6px 0;
+    border:1px solid #ccc;
+    border-radius:7px;
+    font-size:16px;
+}
+
+textarea{
+    height:140px;
+}
+
+.action{
+    background:#176b36;
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:7px;
+    cursor:pointer;
+    margin-top:8px;
+}
+
+.item{
+    background:#f5f9f5;
+    margin-top:10px;
+    padding:15px;
+    border-radius:8px;
+    border-left:5px solid #258447;
+}
+
+.delete{
+    background:#c0392b;
+    color:white;
+    border:0;
+    padding:7px 10px;
+    border-radius:5px;
+    margin-top:8px;
+    cursor:pointer;
+}
+
+footer{
+    margin-top:40px;
+    padding:22px;
+    text-align:center;
+    background:#176b36;
+    color:white;
+}
+
+@media(max-width:700px){
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    nav button{
+        flex:1 1 40%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌾 Fazenda Vitorino</h1>
+    <p>Tarssila Vitorino & Januário Vitorino</p>
+</header>
+
+<nav>
+    <button onclick="abrir('inicio')">🏠 Início</button>
+    <button onclick="abrir('agenda')">📅 Agenda</button>
+    <button onclick="abrir('plantacoes')">🌱 Plantações</button>
+    <button onclick="abrir('animais')">🐄 Animais</button>
+    <button onclick="abrir('bens')">🚜 Bens</button>
+    <button onclick="abrir('financeiro')">💰 Financeiro</button>
+    <button onclick="abrir('notas')">📝 Notas</button>
+</nav>
+
+<main>
+
+<!-- INÍCIO -->
+<section id="inicio" class="page active">
+
+    <h2>📊 Dashboard da Fazenda</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <span>🌱</span>
+            Plantações
+            <strong id="numPlantacoes">0</strong>
+        </div>
+
+        <div class="card">
+            <span>🐄</span>
+            Animais
+            <strong id="numAnimais">0</strong>
+        </div>
+
+        <div class="card">
+            <span>🚜</span>
+            Bens
+            <strong id="numBens">0</strong>
+        </div>
+
+        <div class="card">
+            <span>📅</span>
+            Tarefas
+            <strong id="numTarefas">0</strong>
+        </div>
+
+    </div>
+
+    <div class="box">
+        <h3>Bem-vindo!</h3>
+        <br>
+        <p>
+            Sistema de controlo da Fazenda Tarssila Vitorino
+            e Januário Vitorino.
+        </p>
+        <br>
+        <p>
+            Organize plantações, animais, equipamentos,
+            tarefas, despesas, receitas e anotações.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- AGENDA -->
+<section id="agenda" class="page">
+
+    <h2>📅 Agenda</h2>
+
+    <div class="box">
+
+        <input id="tarefa"
+        placeholder="Nome da tarefa">
+
+        <input id="data"
+        type="date">
+
+        <button class="action" onclick="addTarefa()">
+            + Adicionar tarefa
+        </button>
+
+        <div id="listaTarefas"></div>
+
+    </div>
+
+</section>
+
+
+<!-- PLANTAÇÕES -->
+<section id="plantacoes" class="page">
+
+    <h2>🌱 Plantações</h2>
+
+    <div class="box">
+
+        <input id="cultura"
+        placeholder="Ex: Milho">
+
+        <input id="area"
+        type="number"
+        placeholder="Área em hectares">
+
+        <button class="action" onclick="addPlantacao()">
+            + Adicionar plantação
+        </button>
+
+        <div id="listaPlantacoes"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ANIMAIS -->
+<section id="animais" class="page">
+
+    <h2>🐄 Animais</h2>
+
+    <div class="box">
+
+        <input id="animal"
+        placeholder="Ex: Gado">
+
+        <input id="quantidade"
+        type="number"
+        placeholder="Quantidade">
+
+        <button class="action" onclick="addAnimal()">
+            + Adicionar
+        </button>
+
+        <div id="listaAnimais"></div>
+
+    </div>
+
+</section>
+
+
+<!-- BENS -->
+<section id="bens" class="page">
+
+    <h2>🚜 Bens da Fazenda</h2>
+
+    <div class="box">
+
+        <input id="nomeBem"
+        placeholder="Ex: Trator">
+
+        <input id="valorBem"
+        type="number"
+        placeholder="Valor em Kz">
+
+        <button class="action" onclick="addBem()">
+            + Adicionar bem
+        </button>
+
+        <div id="listaBens"></div>
+
+    </div>
+
+</section>
+
+
+<!-- FINANCEIRO -->
+<section id="financeiro" class="page">
+
+    <h2>💰 Financeiro</h2>
+
+    <div class="box">
+
+        <input id="descricao"
+        placeholder="Descrição">
+
+        <input id="valor"
+        type="number"
+        placeholder="Valor em Kz">
+
+        <select id="tipo">
+            <option value="receita">Receita</option>
+            <option value="despesa">Despesa</option>
+        </select>
+
+        <button class="action" onclick="addMovimento()">
+            + Registrar
+        </button>
+
+        <div id="listaFinanceira"></div>
+
+        <br>
+
+        <h3>Saldo: <span id="saldo">0 Kz</span></h3>
+
+    </div>
+
+</section>
+
+
+<!-- NOTAS -->
+<section id="notas" class="page">
+
+    <h2>📝 Notas</h2>
+
+    <div class="box">
+
+        <textarea id="nota"
+        placeholder="Escreva uma anotação sobre a fazenda..."></textarea>
+
+        <button class="action" onclick="addNota()">
+            + Guardar nota
+        </button>
+
+        <div id="listaNotas"></div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    © 2026 Fazenda Tarssila Vitorino & Januário Vitorino
+</footer>
+
+
+<script>
+
+function abrir(id){
+
+    document.querySelectorAll(".page")
+    .forEach(p => p.classList.remove("active"));
+
+    document.getElementById(id)
+    .classList.add("active");
+}
+
+
+/* AGENDA */
+
+let tarefas=[];
+
+function addTarefa(){
+
+    let nome=document.getElementById("tarefa").value;
+    let data=document.getElementById("data").value;
+
+    if(!nome || !data){
+        alert("Preencha os campos.");
+        return;
+    }
+
+    tarefas.push({nome,data});
+
+    document.getElementById("tarefa").value="";
+    document.getElementById("data").value="";
+
+    mostrarTarefas();
+}
+
+function mostrarTarefas(){
+
+    let lista=document.getElementById("listaTarefas");
+
+    lista.innerHTML="";
+
+    tarefas.forEach((t,i)=>{
+
+        lista.innerHTML+=`
+        <div class="item">
+        📅 <b>${t.nome}</b><br>
+        Data: ${t.data}<br>
+
+        <button class="delete"
+        onclick="apagarTarefa(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+
+    document.getElementById("numTarefas").innerText=tarefas.length;
+}
+
+function apagarTarefa(i){
+    tarefas.splice(i,1);
+    mostrarTarefas();
+}
+
+
+/* PLANTAÇÕES */
+
+let plantacoes=[];
+
+function addPlantacao(){
+
+    let cultura=document.getElementById("cultura").value;
+    let area=document.getElementById("area").value;
+
+    if(!cultura || !area){
+        alert("Preencha os campos.");
+        return;
+    }
+
+    plantacoes.push({cultura,area});
+
+    document.getElementById("cultura").value="";
+    document.getElementById("area").value="";
+
+    mostrarPlantacoes();
+}
+
+function mostrarPlantacoes(){
+
+    let lista=document.getElementById("listaPlantacoes");
+
+    lista.innerHTML="";
+
+    plantacoes.forEach((p,i)=>{
+
+        lista.innerHTML+=`
+        <div class="item">
+        🌱 <b>${p.cultura}</b><br>
+        Área: ${p.area} hectares<br>
+
+        <button class="delete"
+        onclick="apagarPlantacao(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+
+    document.getElementById("numPlantacoes").innerText=
+    plantacoes.length;
+}
+
+function apagarPlantacao(i){
+    plantacoes.splice(i,1);
+    mostrarPlantacoes();
+}
+
+
+/* ANIMAIS */
+
+let animais=[];
+
+function addAnimal(){
+
+    let animal=document.getElementById("animal").value;
+    let quantidade=document.getElementById("quantidade").value;
+
+    if(!animal || !quantidade){
+        alert("Preencha os campos.");
+        return;
+    }
+
+    animais.push({animal,quantidade});
+
+    document.getElementById("animal").value="";
+    document.getElementById("quantidade").value="";
+
+    mostrarAnimais();
+}
+
+function mostrarAnimais(){
+
+    let lista=document.getElementById("listaAnimais");
+
+    lista.innerHTML="";
+
+    animais.forEach((a,i)=>{
+
+        lista.innerHTML+=`
+        <div class="item">
+        🐄 <b>${a.animal}</b><br>
+        Quantidade: ${a.quantidade}<br>
+
+        <button class="delete"
+        onclick="apagarAnimal(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+
+    document.getElementById("numAnimais").innerText=
+    animais.length;
+}
+
+function apagarAnimal(i){
+    animais.splice(i,1);
+    mostrarAnimais();
+}
+
+
+/* BENS */
+
+let bens=[];
+
+function addBem(){
+
+    let nome=document.getElementById("nomeBem").value;
+    let valor=document.getElementById("valorBem").value;
+
+    if(!nome || !valor){
+        alert("Preencha os campos.");
+        return;
+    }
+
+    bens.push({nome,valor});
+
+    document.getElementById("nomeBem").value="";
+    document.getElementById("valorBem").value="";
+
+    mostrarBens();
+}
+
+function mostrarBens(){
+
+    let lista=document.getElementById("listaBens");
+
+    lista.innerHTML="";
+
+    bens.forEach((b,i)=>{
+
+        lista.innerHTML+=`
+        <div class="item">
+        🚜 <b>${b.nome}</b><br>
+        Valor: ${Number(b.valor).toLocaleString("pt-PT")} Kz<br>
+
+        <button class="delete"
+        onclick="apagarBem(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+
+    document.getElementById("numBens").innerText=bens.length;
+}
+
+function apagarBem(i){
+    bens.splice(i,1);
+    mostrarBens();
+}
+
+
+/* FINANCEIRO */
+
+let movimentos=[];
+
+function addMovimento(){
+
+    let descricao=document.getElementById("descricao").value;
+    let valor=Number(document.getElementById("valor").value);
+    let tipo=document.getElementById("tipo").value;
+
+    if(!descricao || valor<=0){
+        alert("Preencha corretamente.");
+        return;
+    }
+
+    movimentos.push({
+        descricao,
+        valor,
+        tipo
+    });
+
+    document.getElementById("descricao").value="";
+    document.getElementById("valor").value="";
+
+    mostrarFinanceiro();
+}
+
+function mostrarFinanceiro(){
+
+    let lista=document.getElementById("listaFinanceira");
+
+    lista.innerHTML="";
+
+    let saldo=0;
+
+    movimentos.forEach((m,i)=>{
+
+        if(m.tipo==="receita"){
+            saldo+=m.valor;
+        }else{
+            saldo-=m.valor;
+        }
+
+        lista.innerHTML+=`
+        <div class="item">
+        💰 <b>${m.descricao}</b><br>
+        ${m.tipo}: ${m.valor.toLocaleString("pt-PT")} Kz<br>
+
+        <button class="delete"
+        onclick="apagarMovimento(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+
+    document.getElementById("saldo").innerText=
+    saldo.toLocaleString("pt-PT")+" Kz";
+}
+
+function apagarMovimento(i){
+    movimentos.splice(i,1);
+    mostrarFinanceiro();
+}
+
+
+/* NOTAS */
+
+let notas=[];
+
+function addNota(){
+
+    let texto=document.getElementById("nota").value;
+
+    if(!texto){
+        alert("Escreva uma nota.");
+        return;
+    }
+
+    notas.push(texto);
+
+    document.getElementById("nota").value="";
+
+    mostrarNotas();
+}
+
+function mostrarNotas(){
+
+    let lista=document.getElementById("listaNotas");
+
+    lista.innerHTML="";
+
+    notas.forEach((n,i)=>{
+
+        lista.innerHTML+=`
+        <div class="item">
+        📝 ${n}<br>
+
+        <button class="delete"
+        onclick="apagarNota(${i})">
+        Apagar
+        </button>
+        </div>`;
+    });
+}
+
+function apagarNota(i){
+    notas.splice(i,1);
+    mostrarNotas();
+}
+
+</script>
+
+</body>
+</html>
